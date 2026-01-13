@@ -23,11 +23,23 @@ func main() {
 	kaiinSvc := services.NewKaiinService(kaiinRepo)
 	kaiinCtrl := controllers.NewKaiinController(kaiinSvc)
 
+	// /api/FactSheetKeiyaku/:kaiinNo
+	fsRepo := repositories.NewInMemoryFSRepository()
+	fsSvc := services.NewFSService(fsRepo)
+	fsCtrl := controllers.NewFSController(fsSvc)
+
+	// api/KaiintenShokaiKeiyaku/ByKaiinNo/:kaiinNo
+	kskRepo := repositories.NewInMemoryKaiintenShokaiKeiyakuRepository()
+	kskSvc := services.NewKaiintenShokaiKeiyakuService(kskRepo)
+	kskCtrl := controllers.NewKaiintenShokaiKeiyakuController(kskSvc)
+
 	// ルーティング
 	api := r.Group("/api")
 	{
 		api.GET("/AtbbKeiyaku/:kaiinNo", ctrl.GetAtbbKeiyaku)
 		api.GET("/Kaiin/:kaiinNo", kaiinCtrl.GetKaiin)
+		api.GET("/FactSheetKeiyaku/:kaiinNo", fsCtrl.GetFS)
+		api.GET("/KaiintenShokaiKeiyaku/ByKaiinNo/:kaiinNo", kskCtrl.GetKSK)
 	}
 
 	addr := ":8080"
