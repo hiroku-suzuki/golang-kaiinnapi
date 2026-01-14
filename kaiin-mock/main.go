@@ -33,6 +33,16 @@ func main() {
 	kskSvc := services.NewKaiintenShokaiKeiyakuService(kskRepo)
 	kskCtrl := controllers.NewKaiintenShokaiKeiyakuController(kskSvc)
 
+	// api/EngineRental/ByControlPanelKaiinNo/:kaiinNo
+	engineRentalRepo := repositories.NewInMemoryEngineRentalRepository()
+	engineRentalSvc := services.NewEngineRentalService(engineRentalRepo)
+	engineRentalCtrl := controllers.NewEngineRentalController(engineRentalSvc)
+
+	// /api/HpToolPlanKeiyaku/:kaiinNo
+	hpRepo := repositories.NewInMemoryHpToolPlanKeiyakuRepository()
+	hpSvc := services.NewHpToolPlanKeiyakuService(hpRepo)
+	hpCtrl := controllers.NewHpToolPlanKeiyakuController(hpSvc)
+
 	// ルーティング
 	api := r.Group("/api")
 	{
@@ -40,6 +50,9 @@ func main() {
 		api.GET("/Kaiin/:kaiinNo", kaiinCtrl.GetKaiin)
 		api.GET("/FactSheetKeiyaku/:kaiinNo", fsCtrl.GetFS)
 		api.GET("/KaiintenShokaiKeiyaku/ByKaiinNo/:kaiinNo", kskCtrl.GetKSK)
+		api.GET("/EngineRental/ByControlPanelKaiinNo/:kaiinNo", engineRentalCtrl.GetByControlPanelKaiinNo)
+		api.GET("/HpToolPlanKeiyaku/:kaiinNo", hpCtrl.GetHpToolPlanKeiyaku)
+
 	}
 
 	addr := ":8080"
