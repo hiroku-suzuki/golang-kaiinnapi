@@ -58,6 +58,16 @@ func main() {
 	seikyuSvc := services.NewSeikyuMasterService(seikyuRepo)
 	seikyuCtrl := controllers.NewSeikyuMasterController(seikyuSvc)
 
+	// /api/Bukkaku/:kaiinNo
+	bukkakuRepo := repositories.NewInMemoryBukkakuRepository()
+	bukkakuSvc := services.NewBukkakuService(bukkakuRepo)
+	bukkakuCtrl := controllers.NewBukkakuController(bukkakuSvc)
+
+	// /api/CreditSettlement/:kaiinNo
+	csRepo := repositories.NewInMemoryCreditSettlementRepository()
+	csSvc := services.NewCreditSettlementService(csRepo)
+	csCtrl := controllers.NewCreditSettlementController(csSvc)
+
 	// ルーティング
 	api := r.Group("/api")
 	{
@@ -70,6 +80,8 @@ func main() {
 		api.GET("/KokyakuKanriKeiyaku/:kaiinNo", kokCtrl.GetKokyakuKanriKeiyaku)
 		api.GET("/Kaiin/List/SameTenpoKaiinNo", sameTenpoCtrl.GetSameTenpoKaiinNo)
 		api.GET("/SeikyuMaster/:kaiinNo", seikyuCtrl.GetSeikyuMaster)
+		api.GET("/Bukkaku/:kaiinNo", bukkakuCtrl.GetBukkaku)
+		api.GET("/CreditSettlement/:kaiinNo", csCtrl.GetCreditSettlement)
 	}
 
 	addr := ":8080"
