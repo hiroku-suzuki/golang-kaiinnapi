@@ -68,6 +68,11 @@ func main() {
 	csSvc := services.NewCreditSettlementService(csRepo)
 	csCtrl := controllers.NewCreditSettlementController(csSvc)
 
+	// /api/EngineRental/LastUsedEngineRentalId/:kaiinNo
+	lastIdRepo := repositories.NewInMemoryEngineRentalLastUsedEngineRentalIdRepository()
+	lastIdSvc := services.NewEngineRentalLastUsedEngineRentalIdService(lastIdRepo)
+	lastIdCtrl := controllers.NewEngineRentalLastUsedEngineRentalIdController(lastIdSvc)
+
 	// ルーティング
 	api := r.Group("/api")
 	{
@@ -82,6 +87,7 @@ func main() {
 		api.GET("/SeikyuMaster/:kaiinNo", seikyuCtrl.GetSeikyuMaster)
 		api.GET("/Bukkaku/:kaiinNo", bukkakuCtrl.GetBukkaku)
 		api.GET("/CreditSettlement/:kaiinNo", csCtrl.GetCreditSettlement)
+		api.GET("/EngineRental/LastUsedEngineRentalId/:kaiinNo", lastIdCtrl.GetLastUsedEngineRentalId)
 	}
 
 	addr := ":8080"
