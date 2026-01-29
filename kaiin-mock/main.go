@@ -73,6 +73,11 @@ func main() {
 	lastIdSvc := services.NewEngineRentalLastUsedEngineRentalIdService(lastIdRepo)
 	lastIdCtrl := controllers.NewEngineRentalLastUsedEngineRentalIdController(lastIdSvc)
 
+	// /api/KaiinIkkatsu/List/ByKaiinNos?kaiinNos=00000001
+	ikkatsuRepo := repositories.NewInMemoryKaiinIkkatsuByKaiinNosRepository()
+	ikkatsuSvc := services.NewKaiinIkkatsuByKaiinNosService(ikkatsuRepo)
+	ikkatsuCtrl := controllers.NewKaiinIkkatsuByKaiinNosController(ikkatsuSvc)
+
 	// ルーティング
 	api := r.Group("/api")
 	{
@@ -88,6 +93,7 @@ func main() {
 		api.GET("/Bukkaku/:kaiinNo", bukkakuCtrl.GetBukkaku)
 		api.GET("/CreditSettlement/:kaiinNo", csCtrl.GetCreditSettlement)
 		api.GET("/EngineRental/LastUsedEngineRentalId/:kaiinNo", lastIdCtrl.GetLastUsedEngineRentalId)
+		api.GET("/KaiinIkkatsu/List/ByKaiinNos", ikkatsuCtrl.GetByKaiinNos)
 	}
 
 	addr := ":8080"
